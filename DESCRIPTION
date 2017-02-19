@@ -1,0 +1,9 @@
+Package: gaussianProcess
+Title: Fits Gaussian Processes for Regression
+Version: 0.0.0.9000
+Authors@R: person("Eli", "Ben-Michael", email = "ebenmichael@berkeley.edu", role = c("aut", "cre"))
+Description: Fits and plots Gaussian processes for regression using various kernels that can be user defined
+Depends: R (>= 3.3.2)
+License: ?
+Encoding: UTF-8
+LazyData: true
