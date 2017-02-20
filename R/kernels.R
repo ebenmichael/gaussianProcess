@@ -1,0 +1,44 @@
+## Various kernel functions for use with GP regression
+
+#' Compute the RBF (Squared Exponential) kernel between two matrices
+#'
+#' @param X An n x d matrix
+#' @param Y An n x d matrix
+#' @param scale The scale parameter, defaults to 1
+#' @return An n x n kernel matrix formed from \code{X} and \code{Y}
+rbf <- function(X, Y, scale=1){
+    # pairwise distances
+    n <- dim(X)[1]
+    distMat <- as.matrix(dist(X-Y, diag=T))
+    # square to get the squared norm
+    distMat <- distMat ^ 2
+    # Get the squared exponential kernel matrix
+    K <- exp(- distMat / (2 * scale ^ 2))
+    K[upper.tri(K)] <- K[lower.tri(K)]
+    return(K)
+    
+}
+
+#' Compute the Matern kernel between two matrices
+#'
+#' @param X An n x d matrix
+#' @param Y An n x d matrix
+#' @param scale The scale parameter, defaults to 1
+#' @param order whether to compute a 3/2 or 5/2 kernel, defaults to 5/2
+#' @return An n x n kernel matrix formed from \code{X} and \code{Y}
+matern <- function(X, Y, scale=1, order=5/2){
+    distMat <- as.matrix(dist(X-Y, diag=T))
+    if(order == 3/2){
+        K <- (1 + sqrt(3) * distMat / scale) * exp(- sqrt(3) * distMat / scale)
+    }
+    else if(order == 5/2) {
+        K <- 1 + sqrt(5) * distMat / scale + 5 * distMat ^ 2 / (3 * scale ^ 2)
+        K <- K * exp(-sqrt(5) / scale)
+    }
+    else{
+        stop("Only Matern 3/2 and 5/2 are supported")
+    }
+    
+    K[upper.tri(K)] <- K[lower.tri(K)]
+    return(K)
+}
