@@ -9,12 +9,11 @@
 rbf <- function(X, Y, scale=1){
     # pairwise distances
     n <- dim(X)[1]
-    distMat <- as.matrix(dist(X-Y, diag=T))
+    distMat <- matrix(proxy::dist(X, Y), nrow=dim(X)[1])
     # square to get the squared norm
     distMat <- distMat ^ 2
     # Get the squared exponential kernel matrix
     K <- exp(- distMat / (2 * scale ^ 2))
-    K[upper.tri(K)] <- K[lower.tri(K)]
     return(K)
     
 }
@@ -27,7 +26,8 @@ rbf <- function(X, Y, scale=1){
 #' @param order whether to compute a 3/2 or 5/2 kernel, defaults to 5/2
 #' @return An n x n kernel matrix formed from \code{X} and \code{Y}
 matern <- function(X, Y, scale=1, order=5/2){
-    distMat <- as.matrix(dist(X-Y, diag=T))
+    # compute pairwise distances
+    distMat <- matrix(proxy::dist(X, Y), nrow=dim(X)[1])
     if(order == 3/2){
         K <- (1 + sqrt(3) * distMat / scale) * exp(- sqrt(3) * distMat / scale)
     }
@@ -39,6 +39,5 @@ matern <- function(X, Y, scale=1, order=5/2){
         stop("Only Matern 3/2 and 5/2 are supported")
     }
     
-    K[upper.tri(K)] <- K[lower.tri(K)]
     return(K)
 }
