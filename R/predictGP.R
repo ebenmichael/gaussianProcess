@@ -23,7 +23,6 @@ predict.gaussianProcess <- function(gp, X) {
     postCov <- Linv %*% t(Knew)
     postCov <- (Knew %*% t(Linv)) %*% postCov
     postCov <- Kself - postCov
-
     posterior <-  list(mean=postMean, covariance=postCov)
     return(posterior)
     

@@ -46,6 +46,7 @@ gaussianProcess <- function(X, y, meanFunc=zeroFunction, kernel=rbf,
     gaussianProcess$cholesky <- L
     gaussianProcess$alpha <- alpha
     gaussianProcess$data <- X
+    gaussianProcess$target <- y
     gaussianProcess$noiseVar <- noiseVar
     class(gaussianProcess) <- "gaussianProcess"
     return(gaussianProcess)

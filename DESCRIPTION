@@ -10,3 +10,4 @@ LazyData: true
 Imports:
 	pryr
 	proxy
+	ggplot2
