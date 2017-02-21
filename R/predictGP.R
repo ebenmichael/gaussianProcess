@@ -1,6 +1,5 @@
 ## Function to predict new data points for a GP
 
-source("gaussianProcess.R")
 
 #' Get the predictive distribution for new data X
 #'

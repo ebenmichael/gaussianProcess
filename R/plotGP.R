@@ -1,8 +1,5 @@
 ## Function to plot the results from a GP regression
 
-source("gaussianProcess.R")
-source("predictGP.R")
-
 
 #' Plot the predictive distribution of new data. Only works with 1 dimension
 #'

@@ -1,6 +1,6 @@
 ## Function to create a Gaussian Process object with a given mean function,
 ## kernel, and data
-source("kernels.R")
+
 
 zeroFunction <- function(x) {
     d <- dim(x)[1]
