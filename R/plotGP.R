@@ -4,13 +4,16 @@
 #' Plot the predictive distribution of new data. Only works with 1 dimension
 #'
 #' @param gp gaussianProcess object
-#' @param xnew Test data points to plot
+#' @param x.min Lowest x value to plot
+#' @param x.max Highest x value to plot
+#' @param by Spacing for x values, defaults to 0.1
 #' @param int.size Posterior intervals are mean +- int.size * var, defaults to 1.96
 #' @param y.var Whether to show predictive distribution for new y, defaults to False
 #' @param plot.points Whether to plot the data as well, defaults to False
-plot.gaussianProcess <- function(gp, Xnew, int.size=1.96, y.var=FALSE,
-                                 plot.points=TRUE) {
+plot.gaussianProcess <- function(gp, x.min, x.max, by=0.1, int.size=1.96,
+                                 y.var=FALSE, plot.points=TRUE) {
 
+    Xnew <- seq(x.min, x.max, by)
     # get the posterior predictive mean and covariance
     pred <- predict(gp, Xnew)
 
