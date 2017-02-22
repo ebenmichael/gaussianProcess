@@ -24,15 +24,19 @@ plot.gaussianProcess <- function(gp, Xnew, int.size=1.96, y.var=FALSE,
         # plot the original data
         df <- data.frame(x=gp$data, y=gp$target)
         gplt <- ggplot2::ggplot() +
-            ggplot2::geom_point(data=df, aes(x=x, y=y), alpha=.5)
+            ggplot2::geom_point(data=df, ggplot2::aes(x=x, y=y), alpha=.5)
     }
     else {
-        gplt <- ggplot2::ggplot(df.pred, aes(x=x, y=mean))
+        gplt <- ggplot2::ggplot(df.pred, ggplot2::aes(x=x, y=mean))
     }
 
     # plot the posterior mean and the posterior intervals
-    gplt <- gplt + geom_line(data=df.pred, aes(x=x,y=mean), color='red') +
-        geom_ribbon(data=df.pred, aes(x=x, ymin=lower, ymax=upper), alpha=.3)
+    gplt <- gplt + ggplot2::geom_line(data=df.pred,
+                             ggplot2::aes(x=x,y=mean),
+                             color='red') +
+        ggplot2::geom_ribbon(data=df.pred,
+                    ggplot2::aes(x=x, ymin=lower, ymax=upper),
+                    alpha=.3)
     # show the plot
     gplt
     

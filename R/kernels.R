@@ -1,4 +1,4 @@
-## Various kernel functions for use with GP regression
+ ## Various kernel functions for use with GP regression
 
 #' Compute the RBF (Squared Exponential) kernel between two matrices
 #'
@@ -35,8 +35,8 @@ matern <- function(X, Y, scale=1, order=5/2, amplitude=1){
         K <- K * amplitude
     }
     else if(order == 5/2) {
-        K <- 1 + sqrt(5) * distMat / scale + 5 * distMat ^ 2 / (3 * scale ^ 2)
-        K <- K * exp(-sqrt(5) / scale) * amplitude
+        K <- (1 + sqrt(5) * distMat / scale + (5 * distMat ^ 2) / (3 * scale ^ 2)) *
+              exp(- (sqrt(5) * distMat) / scale) * amplitude
     }
     else{
         stop("Only Matern 3/2 and 5/2 are supported")
