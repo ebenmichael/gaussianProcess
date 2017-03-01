@@ -2,10 +2,7 @@
 ## kernel, and data
 
 
-zeroFunction <- function(x) {
-    d <- dim(x)[1]
-    return(numeric(d))
-}
+zeroFunction <- function(x) 0
 
 #' Create a gaussianProcess object with a given mean function and covariance
 #' kernel, and data
@@ -17,7 +14,10 @@ zeroFunction <- function(x) {
 #' @param scale The scale of the kernel, defaults to 1
 #' @param order The order of the kernel, defaults to NULL
 #' @param amplitude A parameter which is multiplied by the kernel, defaults to 1
+#'
 #' @return A gaussianProcess with these options
+#'
+#' @export
 gaussianProcess <- function(X, y, meanFunc=zeroFunction, kernel=rbf,
                             noiseVar=1, scale=1, order=NULL, amplitude=1) {
     # initialize the list
@@ -44,6 +44,8 @@ gaussianProcess <- function(X, y, meanFunc=zeroFunction, kernel=rbf,
     # get the kernel matrix and cholesky decomposition for future prediction
     K <- gaussianProcess$kernel(X, X)
     L <- t(chol(K + noiseVar * diag(dim(X)[1])))
+    # center the data by the mean function
+    y <- y - meanFunc(X)
     alpha <- solve(t(L), solve(L, y))
     gaussianProcess$cholesky <- L
     gaussianProcess$alpha <- alpha

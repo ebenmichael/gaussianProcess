@@ -12,5 +12,7 @@ LazyData: true
 Imports:
     pryr,
     proxy,
-    ggplot2
+    ggplot2,
+    MASS,
+    reshape2
 RoxygenNote: 5.0.1

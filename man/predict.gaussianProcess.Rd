@@ -2,7 +2,7 @@
 % Please edit documentation in R/predictGP.R
 \name{predict.gaussianProcess}
 \alias{predict.gaussianProcess}
-\title{Get the predictive distribution for new data X}
+\title{Get the posterior distribution for f(X)}
 \usage{
 \method{predict}{gaussianProcess}(gp, X)
 }
@@ -15,6 +15,6 @@
 posterior A list with fields mean and covariance
 }
 \description{
-Get the predictive distribution for new data X
+Get the posterior distribution for f(X)
 }
 

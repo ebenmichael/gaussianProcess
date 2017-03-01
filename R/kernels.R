@@ -6,7 +6,10 @@
 #' @param Y An n x d matrix
 #' @param scale The scale parameter, defaults to 1
 #' @param amplitude A parameter which is multiplied by the kernel, defaults to 1
+#'
 #' @return An n x n kernel matrix formed from \code{X} and \code{Y}
+#'
+#' @export
 rbf <- function(X, Y, scale=1, amplitude=1){
     # pairwise distances
     n <- dim(X)[1]

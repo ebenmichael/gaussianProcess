@@ -4,19 +4,33 @@
 \alias{plot.gaussianProcess}
 \title{Plot the predictive distribution of new data. Only works with 1 dimension}
 \usage{
-\method{plot}{gaussianProcess}(gp, Xnew, int.size = 1.96, y.var = FALSE,
-  plot.points = TRUE)
+\method{plot}{gaussianProcess}(gp, x.min, x.max, by = 0.1,
+  plot.points = TRUE, plot.mean = TRUE, plot.int = TRUE,
+  plot.samples = FALSE, plot.predictive = FALSE, int.size = 1.96,
+  n.samples = 10)
 }
 \arguments{
 \item{gp}{gaussianProcess object}
 
-\item{int.size}{Posterior intervals are mean +- int.size * var, defaults to 1.96}
+\item{x.min}{Lowest x value to plot}
 
-\item{y.var}{Whether to show predictive distribution for new y, defaults to False}
+\item{x.max}{Highest x value to plot}
+
+\item{by}{Spacing for x values, defaults to 0.1}
 
 \item{plot.points}{Whether to plot the data as well, defaults to False}
 
-\item{xnew}{Test data points to plot}
+\item{plot.mean}{Whether to plot the mean of the process}
+
+\item{plot.int}{Whether to plot an interval around the mean}
+
+\item{plot.samples}{Whether to plot samples}
+
+\item{plot.predictive}{Whether to plot the posterior predictive}
+
+\item{int.size}{Posterior intervals are mean +- int.size * var, defaults to 1.96}
+
+\item{n.samples}{Number of samples to plot}
 }
 \description{
 Plot the predictive distribution of new data. Only works with 1 dimension
