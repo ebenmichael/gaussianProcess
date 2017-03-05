@@ -10,30 +10,44 @@ zeroFunction <- function(x) 0
 #' @param y An n dimensional vector of outputs for observed data
 #' @param meanFunc The mean function of the process, defaults to 0
 #' @param kernel The covariance kernel of the process, defaults to rbf
-#' @param noiseVar The variance of the noise around the function
-#' @param scales The scales of the kernel, defaults to ones
+#' @param hyper.params The hyper parameters for the kernel
+#'                     (\code{c(amplitude, scales)}), if NULL then optimize them
+#'                     using the log likelihood
+#' @param noise.var The variance of the noise around the function
 #' @param order The order of the kernel, defaults to 5/2
-#' @param amplitude A parameter which is multiplied by the kernel, defaults to 1
+#' @param verbose Level of information printed out, defaults to 0
 #'
 #' @return A gaussianProcess with these options
 #'
 #' @export
 gaussianProcess <- function(X, y, meanFunc=zeroFunction, kernel=rbf,
-                            noiseVar=1, scale=NULL, order=5/2, amplitude=1) {
-    d <- dim(X)[1]
-    if(is.null(scales)) {
-        scales = rep(1, d)
+                            hyper.params=NULL, noise.var=1, order=5/2,
+                            verbose=0) {
+    if(! is.matrix(X)) {
+        X <- as.matrix(X)
     }
+    d <- dim(X)[2]
+    if(is.null(hyper.params)) {
+        hyper.params <- optimize_hyper_params(X, y, kernel, order,
+                                              noise.var, verbose=verbose)
+    }
+    n.params <- d + 1
     # initialize the list
     gaussianProcess <- list()
     # set the kernel
+    gaussianProcess$kernel.type <- kernel
+    gaussianProcess$kernel.order <- order
+    gaussianProcess$hyper.params <- hyper.params
     if(identical(kernel, rbf)) {
-        gaussianProcess$kernel <- pryr::partial(kernel, scale=scale,
-                                                amplitude=amplitude)
+        gaussianProcess$kernel <- pryr::partial(kernel,
+                                                scales=hyper.params[2:n.params],
+                                                amplitude=hyper.params[1])
     }
     else if(identical(kernel, matern)) {
-        gaussianProcess$kernel <- pryr::partial(kernel, scale=scale,
-                                                order=order, amplitude=amplitude)
+        gaussianProcess$kernel <- pryr::partial(kernel,
+                                                order=order,
+                                                scales=hyper.params[2:n.params],
+                                                amplitude=hyper.params[1])                                                
     }
     else {
         stop("Kernel must be rbf or matern. Working to fix this")
@@ -41,21 +55,17 @@ gaussianProcess <- function(X, y, meanFunc=zeroFunction, kernel=rbf,
 
     gaussianProcess$meanFunc <- meanFunc
     
-    
-    if(! is.matrix(X)) {
-        X <- as.matrix(X)
-    }
     # get the kernel matrix and cholesky decomposition for future prediction
     K <- gaussianProcess$kernel(X, X)
-    L <- t(chol(K + noiseVar * diag(dim(X)[1])))
+    L <- t(chol(K + noise.var * diag(dim(X)[1])))
     # center the data by the mean function
     y.centered <- y - meanFunc(X)
-    alpha <- solve(t(L), solve(L, y.centered))
+    alpha <- backsolve(t(L), forwardsolve(L, y.centered))
     gaussianProcess$cholesky <- L
     gaussianProcess$alpha <- alpha
     gaussianProcess$data <- X
     gaussianProcess$target <- y
-    gaussianProcess$noiseVar <- noiseVar
+    gaussianProcess$noise.var <- noise.var
     class(gaussianProcess) <- "gaussianProcess"
     return(gaussianProcess)
 }

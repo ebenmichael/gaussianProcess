@@ -14,5 +14,6 @@ Imports:
     proxy,
     ggplot2,
     MASS,
-    reshape2
+    reshape2,
+    stats
 RoxygenNote: 5.0.1

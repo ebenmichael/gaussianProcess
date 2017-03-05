@@ -11,10 +11,10 @@ pdiff <- function(X, Y) {
     ny <- dim(Y)[1]
     # get the indices for the distance matrix
     pts <- expand.grid(1:nx, 1:ny)
-    pts <- cbind(pts[,1], pts[,2])
+    pts <- as.matrix(cbind(pts[,1], pts[,2]))
     # only keep upper triangle indices
-    pts <- matrix(pts[pts[,2] > pts[,1],], ncol=2)
-    return(X[pts[,2],] - Y[pts[,1],])
+    #pts <- matrix(pts[pts[,2] >= pts[,1],], ncol=2)
+    return(X[pts[,1],] - Y[pts[,2],])
 }
 
 
@@ -30,15 +30,17 @@ pdist_scaled <- function(X, Y, scales) {
     ny <- dim(Y)[1]
     dx <- dim(X)[2]
     dy <- dim(Y)[2]
-    if(dx != dy) stop("Matrices have different dimensions") else d=dx
+    if(dx != dy) stop("Matrices have different dimensions") else d <- dx
     # get pairwise differences, square and scale
     diff.mat <- pdiff(X,Y) ^ 2
-    diff.mat <- t(t(diff.mat) / scales)
+    diff.mat <- t(t(diff.mat) / scales^2)
     distances <- rowSums(diff.mat)
-    dist.mat <- matrix(0, nrow=nx, ncol=ny)
-    tri <- upper.tri(dist.mat)
-    dist.mat[tri] <- distances
-    dist.mat <- dist.mat + t(dist.mat)
+    #dist.mat <- matrix(0, nrow=nx, ncol=ny)
+    #utri <- upper.tri(dist.mat, diag=TRUE)
+    #dist.mat[utri] <- distances
+    #ltri <- lower.tri(dist.mat, diag=TRUE)
+    #dist.mat[ltri] <- distances
+    dist.mat <- matrix(distances, nrow=dim(X)[1])
     return(dist.mat)
 }
 
@@ -60,7 +62,7 @@ rbf <- function(X, Y, scales=NULL, amplitude=1){
     }
     distMat <- pdist_scaled(X, Y, scales)
     # Get the squared exponential kernel matrix
-    K <- exp(- distMat / 2) * amplitude
+    K <- exp(- distMat / 2) * amplitude^2
     return(K)
     
 }
@@ -82,11 +84,11 @@ matern <- function(X, Y, scales=NULL, order=5/2, amplitude=1){
     distMat <- pdist_scaled(X, Y, scales)
     if(order == 3/2){
         K <- (1 + sqrt(3 * distMat)) * exp(- sqrt(3) * distMat)
-        K <- K * amplitude
+        K <- K * amplitude^2
     }
     else if(order == 5/2) {
         K <- (1 + sqrt(5 * distMat) + 5/3 * distMat ) *
-              exp(-sqrt(5 * distMat)) * amplitude
+              exp(-sqrt(5 * distMat)) * amplitude^2
     }
     else{
         stop("Only Matern 3/2 and 5/2 are supported")

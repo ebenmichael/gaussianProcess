@@ -13,19 +13,19 @@ predict.gaussianProcess <- function(gp, X) {
     if(! is.matrix(X)){
         X <- as.matrix(X)
     }
-    
+
     Knew <- gp$kernel(X, gp$data)
     # get the posterior mean
     means <- gp$meanFunc(X)
     postMean <- means + Knew %*% gp$alpha
 
     Kself <- gp$kernel(X, X)
-    Linv <- solve(gp$chol)
+    Linv <- forwardsolve(gp$cholesky, diag(dim(gp$cholesky)[1]))
     postCov <- Linv %*% t(Knew)
     postCov <- (Knew %*% t(Linv)) %*% postCov
     postCov <- Kself - postCov
     # add prior noise
-    # postCov <- postCov + gp$noiseVar * diag(dim(postCov)[1])
+    # postCov <- postCov + gp$noise.var * diag(dim(postCov)[1])
     posterior <-  list(mean=postMean, covariance=postCov)
     return(posterior)
     
@@ -52,7 +52,7 @@ sample.gaussianProcess <- function(gp, X, n, pred=F) {
     mu <- post$mean
     Sigma <- post$covariance
     if(pred) {
-        Sigma <- Sigma + gp$noiseVar * diag(dim(Sigma)[1])
+        Sigma <- Sigma + gp$noise.var * diag(dim(Sigma)[1])
     }
     # sample
     y <- MASS::mvrnorm(n, mu, Sigma)

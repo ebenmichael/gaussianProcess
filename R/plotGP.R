@@ -29,14 +29,14 @@ plot.gaussianProcess <- function(gp, x.min, x.max, by=0.1,
     # put the posterior predictive in a data frame
     vars <- diag(pred$covariance)
     if(plot.predictive) {
-        vars <- vars + gp$noiseVar
+        vars <- vars + gp$noise.var
     }
     upper <- pred$mean + int.size * vars
     lower <- pred$mean - int.size * vars
     df.pred <- data.frame(x=Xnew, mean=pred$mean, upper=upper, lower=lower)
     if(plot.points) {
         # plot the original data
-        df <- data.frame(x=gp$data, y=gp$target + gp$meanFunc(x))
+        df <- data.frame(x=gp$data, y=gp$target)
         gplt <- ggplot2::ggplot() +
             ggplot2::geom_point(data=df, ggplot2::aes(x=x, y=y), alpha=.5)
     }
