@@ -11,7 +11,7 @@ zeroFunction <- function(x) 0
 #' @param meanFunc The mean function of the process, defaults to 0
 #' @param kernel The covariance kernel of the process, defaults to rbf
 #' @param noiseVar The variance of the noise around the function
-#' @param scale The scale of the kernel, defaults to 1
+#' @param scales The scales of the kernel, defaults to ones
 #' @param order The order of the kernel, defaults to 5/2
 #' @param amplitude A parameter which is multiplied by the kernel, defaults to 1
 #'
@@ -19,8 +19,11 @@ zeroFunction <- function(x) 0
 #'
 #' @export
 gaussianProcess <- function(X, y, meanFunc=zeroFunction, kernel=rbf,
-                            noiseVar=1, scale=1, order=5/2, amplitude=1) {
-
+                            noiseVar=1, scale=NULL, order=5/2, amplitude=1) {
+    d <- dim(X)[1]
+    if(is.null(scales)) {
+        scales = rep(1, d)
+    }
     # initialize the list
     gaussianProcess <- list()
     # set the kernel
