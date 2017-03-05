@@ -12,14 +12,15 @@ zeroFunction <- function(x) 0
 #' @param kernel The covariance kernel of the process, defaults to rbf
 #' @param noiseVar The variance of the noise around the function
 #' @param scale The scale of the kernel, defaults to 1
-#' @param order The order of the kernel, defaults to NULL
+#' @param order The order of the kernel, defaults to 5/2
 #' @param amplitude A parameter which is multiplied by the kernel, defaults to 1
 #'
 #' @return A gaussianProcess with these options
 #'
 #' @export
 gaussianProcess <- function(X, y, meanFunc=zeroFunction, kernel=rbf,
-                            noiseVar=1, scale=1, order=NULL, amplitude=1) {
+                            noiseVar=1, scale=1, order=5/2, amplitude=1) {
+
     # initialize the list
     gaussianProcess <- list()
     # set the kernel
@@ -45,8 +46,8 @@ gaussianProcess <- function(X, y, meanFunc=zeroFunction, kernel=rbf,
     K <- gaussianProcess$kernel(X, X)
     L <- t(chol(K + noiseVar * diag(dim(X)[1])))
     # center the data by the mean function
-    y <- y - meanFunc(X)
-    alpha <- solve(t(L), solve(L, y))
+    y.centered <- y - meanFunc(X)
+    alpha <- solve(t(L), solve(L, y.centered))
     gaussianProcess$cholesky <- L
     gaussianProcess$alpha <- alpha
     gaussianProcess$data <- X
