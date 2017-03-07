@@ -30,6 +30,7 @@ pdist_scaled <- function(X, Y, scales) {
     ny <- dim(Y)[1]
     dx <- dim(X)[2]
     dy <- dim(Y)[2]
+    
     if(dx != dy) stop("Matrices have different dimensions") else d <- dx
     # get pairwise differences, square and scale
     diff.mat <- pdiff(X,Y) ^ 2

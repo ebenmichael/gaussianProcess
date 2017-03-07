@@ -27,8 +27,11 @@ gaussianProcess <- function(X, y, meanFunc=zeroFunction, kernel=rbf,
         X <- as.matrix(X)
     }
     d <- dim(X)[2]
+    # center the data by the mean function
+    y.centered <- y - meanFunc(X)
+    # optimize the hyper parameters if necessary
     if(is.null(hyper.params)) {
-        hyper.params <- optimize_hyper_params(X, y, kernel, order,
+        hyper.params <- optimize_hyper_params(X, y.centered, kernel, order,
                                               noise.var, verbose=verbose)
     }
     n.params <- d + 1
@@ -58,9 +61,8 @@ gaussianProcess <- function(X, y, meanFunc=zeroFunction, kernel=rbf,
     # get the kernel matrix and cholesky decomposition for future prediction
     K <- gaussianProcess$kernel(X, X)
     L <- t(chol(K + noise.var * diag(dim(X)[1])))
-    # center the data by the mean function
-    y.centered <- y - meanFunc(X)
     alpha <- backsolve(t(L), forwardsolve(L, y.centered))
+    # keep around all this stuff
     gaussianProcess$cholesky <- L
     gaussianProcess$alpha <- alpha
     gaussianProcess$data <- X
