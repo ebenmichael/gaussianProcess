@@ -49,7 +49,7 @@ gp_log_marg_like_helper <- function(y, K, alpha) {
     logp1 <- -1/2 * t(y) %*% alpha # data fit
     logp2 <- -1/2 * log(det(K)) # complexity penalty
     logp3 <- -n/2 * log(2 * pi) # normalization constant
-    return(logp1 + logp2+ logp3)
+    return(logp1 + logp2 + logp3)
 }
 
 ## Generic S3 method
@@ -180,7 +180,7 @@ optimize_hyper_params <- function(X, y, kernel.type=rbf,
 
     n.params <- dim(X)[2] + 1
     # initialize at ones
-    theta0 <-rep(10, n.params)
+    theta0 <-rep(1, n.params)
     # optimize
     ctrl <- list()
     ctrl$trace <- verbose
