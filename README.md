@@ -38,7 +38,7 @@ mean.f <- function(x) x %*% beta
 Or you can use the `pryr` package to do a partial application
 
 ```R
-fit <- glmnet(x, y, s=1)
+fit <- glmnet(x, y, lambda=1)
 mean.f <- pryr::partial(predict, object=fit)
 ```
 
