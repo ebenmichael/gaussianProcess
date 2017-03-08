@@ -53,6 +53,7 @@ gp_log_marg_like_helper <- function(y, K, alpha) {
 }
 
 ## Generic S3 method
+#' @export
 log_marginal_like <- function(obj, ...) {
     UseMethod("log_marginal_like")
 }
