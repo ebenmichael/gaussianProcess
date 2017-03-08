@@ -22,7 +22,7 @@ plot.gaussianProcess <- function(gp, x.min, x.max, by=0.1,
                                  plot.predictive=FALSE, int.size=1.96,
                                  n.samples=10) {
 
-    Xnew <- seq(x.min, x.max, by)
+    Xnew <- as.matrix(seq(x.min, x.max, by))
     # get the posterior predictive mean and covariance
     pred <- predict(gp, Xnew)
 
