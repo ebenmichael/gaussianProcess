@@ -11,7 +11,7 @@
 predict.gaussianProcess <- function(gp, X) {
 
     if(! is.matrix(X)){
-        X <- as.matrix(X)
+        stop("Input is not a matrix")
     }
 
     Knew <- gp$kernel(X, gp$data)

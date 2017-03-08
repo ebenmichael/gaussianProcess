@@ -61,6 +61,7 @@ log_marginal_like <- function(obj, ...) {
 #' @param gp A gaussianProcess object
 #'
 #' @return Log marginal likelihood
+#' @export
 log_marginal_like.gaussianProcess <- function(gp) {
     K <- gp$cholesky %*% t(gp$cholesky)
     y.centered <- gp$target - gp$meanFunc(gp$data)

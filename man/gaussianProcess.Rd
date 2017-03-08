@@ -5,8 +5,8 @@
 \title{Create a gaussianProcess object with a given mean function and covariance
 kernel, and data}
 \usage{
-gaussianProcess(X, y, meanFunc = zeroFunction, kernel = rbf, noiseVar = 1,
-  scale = 1, order = NULL, amplitude = 1)
+gaussianProcess(X, y, meanFunc = zeroFunction, kernel = rbf,
+  hyper.params = NULL, noise.var = 1, order = 5/2, verbose = 0)
 }
 \arguments{
 \item{X}{An n x d matrix of covariates for observed data}
@@ -17,13 +17,15 @@ gaussianProcess(X, y, meanFunc = zeroFunction, kernel = rbf, noiseVar = 1,
 
 \item{kernel}{The covariance kernel of the process, defaults to rbf}
 
-\item{noiseVar}{The variance of the noise around the function}
+\item{hyper.params}{The hyper parameters for the kernel
+(\code{c(amplitude, scales)}), if NULL then optimize them
+using the log likelihood}
 
-\item{scale}{The scale of the kernel, defaults to 1}
+\item{noise.var}{The variance of the noise around the function}
 
-\item{order}{The order of the kernel, defaults to NULL}
+\item{order}{The order of the kernel, defaults to 5/2}
 
-\item{amplitude}{A parameter which is multiplied by the kernel, defaults to 1}
+\item{verbose}{Level of information printed out, defaults to 0}
 }
 \value{
 A gaussianProcess with these options

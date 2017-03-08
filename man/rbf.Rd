@@ -4,14 +4,14 @@
 \alias{rbf}
 \title{Compute the RBF (Squared Exponential) kernel between two matrices}
 \usage{
-rbf(X, Y, scale = 1, amplitude = 1)
+rbf(X, Y, scales = NULL, amplitude = 1)
 }
 \arguments{
 \item{X}{An n x d matrix}
 
 \item{Y}{An n x d matrix}
 
-\item{scale}{The scale parameter, defaults to 1}
+\item{scales}{The scale parameters, defaults to all ones}
 
 \item{amplitude}{A parameter which is multiplied by the kernel, defaults to 1}
 }

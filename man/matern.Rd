@@ -4,14 +4,14 @@
 \alias{matern}
 \title{Compute the Matern kernel between two matrices}
 \usage{
-matern(X, Y, scale = 1, order = 5/2, amplitude = 1)
+matern(X, Y, scales = NULL, order = 5/2, amplitude = 1)
 }
 \arguments{
 \item{X}{An n x d matrix}
 
 \item{Y}{An n x d matrix}
 
-\item{scale}{The scale parameter, defaults to 1}
+\item{scales}{The scale parameters, defaults to all ones}
 
 \item{order}{whether to compute a 3/2 or 5/2 kernel, defaults to 5/2}
 

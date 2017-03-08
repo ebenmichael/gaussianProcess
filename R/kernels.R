@@ -14,7 +14,7 @@ pdiff <- function(X, Y) {
     pts <- as.matrix(cbind(pts[,1], pts[,2]))
     # only keep upper triangle indices
     #pts <- matrix(pts[pts[,2] >= pts[,1],], ncol=2)
-    return(X[pts[,1],] - Y[pts[,2],])
+    return(X[pts[, 1], drop=F] - Y[pts[,2], drop=F])
 }
 
 
