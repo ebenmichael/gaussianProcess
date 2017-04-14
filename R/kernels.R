@@ -76,6 +76,7 @@ rbf <- function(X, Y, scales=NULL, amplitude=1){
 #' @param order whether to compute a 3/2 or 5/2 kernel, defaults to 5/2
 #' @param amplitude A parameter which is multiplied by the kernel, defaults to 1
 #' @return An n x n kernel matrix formed from \code{X} and \code{Y}
+#' @export
 matern <- function(X, Y, scales=NULL, order=5/2, amplitude=1){
     # compute pairwise distances
     d <- dim(X)[1]
