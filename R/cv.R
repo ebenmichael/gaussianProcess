@@ -7,6 +7,7 @@ loocv <- function(object,...) {
 
 #' Compute the leave one out CV estimate (Rasmussen & WIllaims pg 117)
 #' @param gp The gaussianProcess
+#' @export
 loocv.gaussianProcess <- function(gp) {
     # get the weight matrix on the observations
     L.inv <- forwardsolve(gp$cholesky, diag(dim(gp$cholesky)[1]))
