@@ -14,7 +14,7 @@ pdiff <- function(X, Y) {
     pts <- as.matrix(cbind(pts[,1], pts[,2]))
     # only keep upper triangle indices
     #pts <- matrix(pts[pts[,2] >= pts[,1],], ncol=2)
-    return(X[pts[, 1], drop=F] - Y[pts[,2], drop=F])
+    return(X[pts[, 1], ,drop=F] - Y[pts[,2], ,drop=F])
 }
 
 
@@ -42,6 +42,10 @@ pdist_scaled <- function(X, Y, scales) {
     #ltri <- lower.tri(dist.mat, diag=TRUE)
     #dist.mat[ltri] <- distances
     dist.mat <- matrix(distances, nrow=dim(X)[1])
+    # if all of the distances are tiny, just send to 0
+    if(max(dist.mat) < 1e-6) {
+        dist.mat <- matrix(0, nrow=dim(dist.mat)[1], ncol=dim(dist.mat)[2])
+    }
     return(dist.mat)
 }
 
@@ -57,13 +61,17 @@ pdist_scaled <- function(X, Y, scales) {
 #'
 #' @export
 rbf <- function(X, Y, scales=NULL, amplitude=1){
-    d <- dim(X)[1]
+    d <- dim(X)[2]
     if(is.null(scales)) {
         scales = rep(1, d)
     }
     distMat <- pdist_scaled(X, Y, scales)
     # Get the squared exponential kernel matrix
     K <- exp(- distMat / 2) * amplitude^2
+    # find the closest PSD matrix to K if K is symmetric
+    #if(isSymmetric(K)) {
+    #    K <- as.matrix(Matrix::nearPD(K)$mat)
+    #}
     return(K)
     
 }
@@ -79,7 +87,7 @@ rbf <- function(X, Y, scales=NULL, amplitude=1){
 #' @export
 matern <- function(X, Y, scales=NULL, order=5/2, amplitude=1){
     # compute pairwise distances
-    d <- dim(X)[1]
+    d <- dim(X)[2]
     if(is.null(scales)) {
         scales = rep(1, d)
     }

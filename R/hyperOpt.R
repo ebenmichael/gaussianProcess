@@ -30,7 +30,7 @@ gp_log_marg_like <- function(hyper.params, X, y, kernel.type=rbf,
     # precompute the cholesky factors for the matrix inversion
     K <- kernel(X, X) + noise.var * diag(dim(X)[1])
     L <- t(chol(K))
-    alpha <- backsolve(t(L), forwardsolve(L, y))
+    alpha <- backsolve(t(L), forwardsolve(L, y), k=ncol(L))
     # compute the log marginal likelihood
     return(gp_log_marg_like_helper(y, K, alpha))
 }
