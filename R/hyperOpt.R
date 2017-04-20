@@ -183,6 +183,8 @@ optimize_hyper_params <- function(X, y, kernel.type=rbf,
     n.params <- dim(X)[2] + 1
     # initialize at ones
     theta0 <-rep(1, n.params)
+    # make theta0[1] = 10 for ill conditioned problems
+    theta0[1] <- 10
     # optimize
     ctrl <- list()
     ctrl$trace <- verbose
